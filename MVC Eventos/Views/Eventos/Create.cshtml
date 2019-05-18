@@ -1,0 +1,71 @@
+﻿@model MVC_Eventos.Models.EventosModel
+@{
+    ViewBag.Title = "Crear Nuevo Evento";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "validateForm(event)" }))
+
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal" id="formCreate">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParticipanteEvento, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        @for (var i = 0; i < Model.ParticipanteEvento.Count; i++)
+        {
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ParticipanteEvento[i].Participante)
+                    @Html.ValidationMessageFor(model => model.ParticipanteEvento[i].Participante, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="frmPost" id="SubmitEvento" value="Crear" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    $(function validateForm(event) {
+        event.preventDefault();
+        var form = $(this);
+        alert(form);
+        $.ajax({
+            url: "/Eventos/Create",
+            type: 'POST',
+            data: form.serialize(),
+            dataType: "json",
+            traditional: true,
+            success: function (response) {
+                $('#CreateModalBody').html(response);
+                $("#ModalCreate").modal("show");
+            },
+            error: function (xhr, status) {
+                $('#CreateModalBody').html(result);
+
+            },
+    });
+</script>
+@section scripts {
+    
+}
+

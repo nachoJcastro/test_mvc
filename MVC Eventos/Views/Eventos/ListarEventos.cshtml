@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MVC_Eventos.Models.EventosModel>
+
+@{
+    ViewBag.Title = "Eventos";
+}
+
+<br />
+<table class="table">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParticipanteEvento)
+            </th>
+
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+
+            <td>
+                @foreach (var part in item.ParticipanteEvento)
+                {
+                    @Html.DisplayFor(modelItem => part.Participante) @(" ")
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.EventoID })
+            </td>
+        </tr>
+    }
+
+</table>
